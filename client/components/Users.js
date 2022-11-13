@@ -13,8 +13,10 @@ import MyButton from "./MyButton";
 const Users = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [userList, setUserList] = useState([]);
+  const [fireDelete, setFireDelete] = useState(false);
 
   const fetchUsers = () => {
+    setLoading(true);
     let options = {
       method: "POST",
       headers: {
@@ -44,20 +46,20 @@ const Users = ({ navigation }) => {
   useEffect(() => {
     fetchUsers();
     console.log(userList);
-  }, []);
+  }, [fireDelete]);
 
   // fetchUsers();
 
   return (
     <View style={styles.container}>
       {isLoading ? (
-        <ActivityIndicator />
+        <ActivityIndicator size="large" color="#439889" />
       ) : (
         <View style={styles.loadedContainer}>
-          <Text>Users</Text>
+          {/* <Text>Users</Text> */}
           <View style={styles.btnBack}>
             <MyButton
-              color="green"
+              color="#00695c"
               text="BACK TO LOGIN PAGE"
               passedFunc={backToLoginPage}
             ></MyButton>
@@ -65,7 +67,14 @@ const Users = ({ navigation }) => {
           <FlatList
             data={userList}
             renderItem={({ item }) => (
-              <ListItem id={item.id} userName={item.login}></ListItem>
+              <ListItem
+                id={item.id}
+                userName={item.login}
+                password={item.password}
+                date={item.date}
+                fireDelete={fireDelete}
+                setFireDelete={setFireDelete}
+              ></ListItem>
             )}
           />
         </View>
@@ -92,5 +101,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
+    paddingTop: 20,
   },
 });

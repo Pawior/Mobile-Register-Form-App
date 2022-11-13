@@ -6,6 +6,7 @@ import Screen1 from "./components/Screen1";
 import Users from "./components/Users";
 import ListItem from "./components/ListItem";
 import Main from "./components/Main";
+import Details from "./components/Details";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ function App() {
         />
         <Stack.Screen name="Users" component={Users} />
         <Stack.Screen name="ListItem" component={ListItem} />
+        <Stack.Screen name="Details" component={Details} />
       </Stack.Navigator>
     </NavigationContainer>
   );

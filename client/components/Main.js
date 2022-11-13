@@ -12,6 +12,7 @@ import { settings } from "./Settings";
 const Main = ({ navigation }) => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
+  const [doesExit, setDoesExit] = useState(false);
 
   const registerUser = () => {
     let options = {
@@ -23,6 +24,7 @@ const Main = ({ navigation }) => {
       body: JSON.stringify({
         login: login,
         password: password,
+        date: new Date().toLocaleString(),
       }),
     };
     // Musze zewnetrzne ip dac, bo telefon jest w innej sieci
@@ -31,16 +33,21 @@ const Main = ({ navigation }) => {
         .then((response) => response.json())
         .then((json) => {
           console.log(json);
-          return json;
+          // return json;
+          if (json.hasOwnProperty("error")) {
+            alert("ERROR! USEREXISTS");
+          } else {
+            navigation.navigate("Users");
+          }
         })
         .catch((error) => {
           console.error(error);
         });
     };
-    let receivedData = sendUserToServer();
+    sendUserToServer();
     console.log(`${settings.adres}${settings.port}/sendUser`);
     // console.log(settings.adres);
-    navigation.navigate("Users");
+    // navigation.navigate("Users");
   };
 
   return (
@@ -56,16 +63,16 @@ const Main = ({ navigation }) => {
             style={styles.input}
             placeholder="Login"
             onChangeText={(newText) => setLogin(newText)}
-            defaultValue={"test"}
+            defaultValue={""}
           ></TextInput>
           <TextInput
             style={styles.input}
             placeholder="Password"
             onChangeText={(newText) => setPassword(newText)}
-            defaultValue={"test"}
+            defaultValue={""}
           ></TextInput>
           <MyButton
-            color="green"
+            color="#00695c"
             text="Register"
             t="tesxtssd"
             passedFunc={registerUser}
@@ -85,7 +92,7 @@ const styles = StyleSheet.create({
   },
   nameContainer: {
     flex: 1,
-    backgroundColor: "#1fb",
+    backgroundColor: "#80cbc4",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
